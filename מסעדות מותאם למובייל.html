@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסעדות כשרות בחיפה והקריות</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #f8fafc;
+        }
+        .restaurant-card {
+            transition: transform 0.2s;
+        }
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white py-10 px-4 shadow-lg text-center">
+        <h1 class="text-4xl font-bold mb-2">קולינריה כשרה בחיפה והקריות</h1>
+        <p class="text-xl opacity-90">כל המסעדות הכשרות עם גישה מהירה לביקורות וניווט</p>
+    </header>
+
+    <!-- Filters Section -->
+    <section class="max-w-6xl mx-auto p-6 -mt-8">
+        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 mb-8">
+            <h2 class="text-lg font-semibold mb-4 text-indigo-700">סינון לפי העדפה:</h2>
+            <div class="flex flex-wrap gap-3">
+                <button id="btn-all" onclick="filterRestaurants('all')" class="filter-btn px-6 py-2 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition">הכל</button>
+                <button id="btn-meat" onclick="filterRestaurants('meat')" class="filter-btn px-6 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-medium hover:border-indigo-500 hover:text-indigo-500 transition">בשרי</button>
+                <button id="btn-dairy" onclick="filterRestaurants('dairy')" class="filter-btn px-6 py-2 rounded-full bg-white border border-gray-300 text-gray-700 font-medium hover:border-indigo-500 hover:text-indigo-500 transition">חלבי/דגים</button>
+            </div>
+        </div>
+
+        <!-- Restaurants Grid -->
+        <div id="restaurants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be injected here by JS -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 text-center text-gray-500 text-sm">
+        <p>© מדריך הכשרות הדיגיטלי - חיפה והקריות</p>
+        <p class="mt-1 italic">* הנתונים מבוססים על דפי העסק בגוגל. מומלץ לוודא כשרות בבית העסק.</p>
+    </footer>
+
+    <script>
+        const restaurants = [
+            {
+                name: "BP - ביסטרו כשר",
+                category: "meat",
+                cuisine: "המבורגרים ובשרים",
+                location: "מפרץ חיפה",
+                address: "שד' ההסתדרות 157, חיפה",
+                description: "ביסטרו בשרי כשר פופולרי מאוד, ידוע בבשרים המעושנים ובהמבורגרים האיכותיים.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=BP+Kosher+Bistro+Haifa",
+                wazeUrl: "https://waze.com/ul?q=BP+חיפה"
+            },
+            {
+                name: "אווזי חיפה",
+                category: "meat",
+                cuisine: "גריל ישראלי",
+                location: "מפרץ חיפה",
+                address: "קניון חוצות המפרץ, חיפה",
+                description: "בשרים על האש, מבחר סלטים טריים ואווירה ישראלית כשרה.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=אווזי+חיפה+כשר+חוצות+המפרץ",
+                wazeUrl: "https://waze.com/ul?q=אווזי+חוצות+המפרץ"
+            },
+            {
+                name: "סנטה רוזה",
+                category: "meat",
+                cuisine: "איטלקי-בשרי",
+                location: "חיפה",
+                address: "שדרות הנשיא 129",
+                description: "מסעדת שף איטלקית בשרית כשרה בלב הכרמל.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=סנטה+רוזה+חיפה",
+                wazeUrl: "https://waze.com/ul?q=סנטה+רוזה+חיפה"
+            },
+            {
+                name: "רצ'ינל (Recinella)",
+                category: "dairy",
+                cuisine: "איטלקי כשר למהדרין",
+                location: "חיפה",
+                address: "הנביאים 22",
+                description: "אוכל איטלקי ביתי ומושקע בכשרות מהדרין.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=רצ'ינל+חיפה",
+                wazeUrl: "https://waze.com/ul?q=רצ'ינל+חיפה"
+            },
+            {
+                name: "רפאלו (קריון)",
+                category: "dairy",
+                cuisine: "איטלקי",
+                location: "קרית ביאליק",
+                address: "קניון עופר הקריון",
+                description: "הסניף הכשר של רפאלו. איטלקי מוקפד ואיכותי.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=רפאלו+הקריון",
+                wazeUrl: "https://waze.com/ul?q=רפאלו+קריון"
+            },
+            {
+                name: "בורדו (Bordeaux)",
+                category: "meat",
+                cuisine: "בשרים / גריל",
+                location: "חיפה",
+                address: "שדרות ההסתדרות 251",
+                description: "מסעדת בשרים וביסטרו כשר עם מנות נדיבות.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=בורדו+חיפה",
+                wazeUrl: "https://waze.com/ul?q=בורדו+חיפה"
+            },
+            {
+                name: "ג'ירף (קריון)",
+                category: "meat",
+                cuisine: "אסייתי",
+                location: "קרית ביאליק",
+                address: "עופר הקריון",
+                description: "הגרסה הכשרה של מוסד האוכל האסייתי המפורסם.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=ג'ירף+הקריון",
+                wazeUrl: "https://waze.com/ul?q=ג'ירף+קריון"
+            },
+            {
+                name: "קפה גרג (מהדרין קריון)",
+                category: "dairy",
+                cuisine: "בית קפה",
+                location: "קרית ביאליק",
+                address: "קניון הקריון",
+                description: "סניף גרג בכשרות מהדרין עם תפריט חלבי עשיר.",
+                googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=קפה+גרג+קריון",
+                wazeUrl: "https://waze.com/ul?q=קפה+גרג+קריון"
+            }
+        ];
+
+        function renderRestaurants(data) {
+            const grid = document.getElementById('restaurants-grid');
+            grid.innerHTML = '';
+
+            data.forEach(res => {
+                const card = `
+                    <div class="restaurant-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex flex-col h-full" dir="rtl">
+                        <div class="p-5 flex-grow">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-gray-900">${res.name}</h3>
+                                <span class="text-xs font-semibold px-2 py-1 rounded ${res.category === 'meat' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}">
+                                    ${res.category === 'meat' ? 'בשרי' : 'חלבי/דגים'}
+                                </span>
+                            </div>
+                            <p class="text-sm text-indigo-600 font-medium mb-2">${res.cuisine} | ${res.location}</p>
+                            <p class="text-sm text-gray-500 mb-4">${res.description}</p>
+                            <div class="flex items-center text-xs text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                ${res.address}
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-4 border-t border-gray-100 flex gap-2">
+                            <a href="${res.googleMapsUrl}" target="_blank" class="flex-1 bg-white border border-gray-300 text-gray-700 text-center py-2 rounded-lg font-semibold hover:bg-gray-100 transition text-sm flex items-center justify-center gap-1">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/maps_64dp.png" class="w-4 h-4" alt="Maps">
+                                גוגל מפה
+                            </a>
+                            <a href="${res.wazeUrl}" target="_blank" class="flex-1 bg-[#33ccff] text-white text-center py-2 rounded-lg font-semibold hover:bg-[#2bb8e6] transition flex items-center justify-center gap-1 text-sm">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Waze_icon.svg" class="w-4 h-4" alt="Waze">
+                                <span>נווט ב-Waze</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        function filterRestaurants(category) {
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+            });
+            
+            const activeBtn = event ? event.currentTarget : document.getElementById('btn-all');
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            activeBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+            if (category === 'all') {
+                renderRestaurants(restaurants);
+            } else {
+                const filtered = restaurants.filter(r => r.category === category);
+                renderRestaurants(filtered);
+            }
+        }
+
+        window.onload = () => renderRestaurants(restaurants);
+    </script>
+</body>
+</html>
