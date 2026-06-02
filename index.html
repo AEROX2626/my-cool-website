@@ -60,6 +60,10 @@
             -webkit-overflow-scrolling: touch; 
         }
         
+        html.overflow-hidden, body.overflow-hidden {
+            overflow: hidden !important;
+        }
+        
         #detailPageContainer {
             -webkit-overflow-scrolling: touch; 
             overscroll-behavior-y: contain;
@@ -113,6 +117,18 @@
             width: 100%;
             height: 100%;
             min-height: 350px;
+        }
+
+        /* --- תוספות ל-UI של המפה (Wolt Style) --- */
+        .map-custom-label {
+            background-color: rgba(255, 255, 255, 0.98);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 4px 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-38px);
+            white-space: nowrap;
+            direction: rtl;
         }
     </style>
     
@@ -273,9 +289,9 @@
                 <i class="fa-solid fa-tags wolt-text-cyan"></i>
                 <span>קטגוריות פופולריות</span>
             </h2>
-            <span class="text-xs text-slate-400 font-bold">החליקו ימינה/שמאלה <i class="fa-solid fa-arrows-left-right"></i></span>
+            <span class="text-xs text-slate-400 font-bold hidden md:inline">החליקו ימינה/שמאלה <i class="fa-solid fa-arrows-left-right"></i></span>
         </div>
-        <div class="flex gap-2.5 overflow-x-auto pb-3 px-4 sm:px-6 lg:px-8 no-scrollbar w-full" id="categoryCarousel"></div>
+        <div class="flex flex-wrap md:flex-nowrap gap-2.5 gap-y-3 md:gap-y-2.5 md:overflow-x-auto pb-3 px-4 sm:px-6 lg:px-8 no-scrollbar w-full" id="categoryCarousel"></div>
     </section>
 
     <section class="sticky-filters bg-white/95 backdrop-blur-md border-y border-slate-100 shadow-sm py-2 z-90 transition-all duration-300">
@@ -477,7 +493,7 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-6 lg:p-8 space-y-8 text-right bg-white">
+            <div class="p-4 sm:p-6 lg:p-8 space-y-6 text-right bg-white">
                 
                 <div class="flex flex-col md:flex-row md:items-start justify-between gap-5 border-b border-slate-100 pb-6">
                     <div class="flex-1 space-y-3">
@@ -505,64 +521,63 @@
                     </div>
                 </div>
 
-                <div class="flex flex-wrap gap-3">
-                    <div class="flex-1 min-w-[120px] flex items-center gap-3 bg-white border border-slate-200 shadow-sm px-4 py-3 rounded-2xl">
+                <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div class="flex flex-col items-center justify-center gap-1.5 bg-white border border-slate-100 shadow-sm p-3 rounded-2xl text-center transition-shadow">
                         <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-certificate text-emerald-600 text-sm"></i>
+                            <i class="fa-solid fa-certificate text-emerald-500 text-sm"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">כשרות</span>
-                            <span id="gridKosherType" class="text-xs font-black text-slate-800"></span>
+                            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">כשרות</span>
+                            <span id="gridKosherType" class="text-[11px] font-black text-slate-800 line-clamp-1"></span>
                         </div>
                     </div>
-                    <div class="flex-1 min-w-[120px] flex items-center gap-3 bg-white border border-slate-200 shadow-sm px-4 py-3 rounded-2xl">
+                    
+                    <div class="flex flex-col items-center justify-center gap-1.5 bg-white border border-slate-100 shadow-sm p-3 rounded-2xl text-center transition-shadow">
                         <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-utensils text-blue-500 text-sm"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">סוג מקום</span>
-                            <span id="gridCategory" class="text-xs font-black text-slate-800"></span>
+                            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">סוג מקום</span>
+                            <span id="gridCategory" class="text-[11px] font-black text-slate-800 line-clamp-1"></span>
                         </div>
                     </div>
-                    <div class="flex-1 min-w-[120px] flex items-center gap-3 bg-white border border-slate-200 shadow-sm px-4 py-3 rounded-2xl">
+                    
+                    <div class="flex flex-col items-center justify-center gap-1.5 bg-white border border-slate-100 shadow-sm p-3 rounded-2xl text-center transition-shadow">
                         <div class="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-location-arrow text-rose-500 text-sm"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">מרחק</span>
-                            <span id="gridDistance" class="text-xs font-black text-slate-800"></span>
+                            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">מרחק</span>
+                            <span id="gridDistance" class="text-[11px] font-black text-slate-800 line-clamp-1"></span>
                         </div>
                     </div>
                 </div>
 
-                <nav class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-6" aria-label="פעולות למסעדה">
-                    <a id="modalWazeBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-[#0099FF] hover:bg-[#0088EB] text-white text-xs font-bold py-3 px-4 rounded-xl transition-colors shadow-sm text-center">
-                        <i class="fa-brands fa-waze text-base"></i>
-                        <span>ניווט ב-Waze</span>
+                <nav class="grid grid-cols-4 gap-2.5 my-6" aria-label="פעולות למסעדה">
+                    <a id="modalWazeBtn" href="#" target="_blank" class="flex flex-col items-center justify-center gap-1.5 bg-[#00c2e8] hover:bg-[#00adc0] text-white text-[10px] sm:text-xs font-black py-3 px-1 rounded-2xl transition-all shadow-[0_4px_14px_rgba(0,194,232,0.25)] active:scale-[0.96]">
+                        <i class="fa-brands fa-waze text-lg sm:text-xl"></i>
+                        <span>Waze</span>
                     </a>
-                    <a id="modalPhoneBtn" href="#" class="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold py-3 px-4 rounded-xl transition-colors shadow-sm">
-                        <i class="fa-solid fa-phone text-base"></i>
-                        <span>שיחת טלפון</span>
+                    <a id="modalPhoneBtn" href="#" class="flex flex-col items-center justify-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] sm:text-xs font-black py-3 px-1 rounded-2xl transition-all shadow-[0_4px_14px_rgba(16,185,129,0.25)] active:scale-[0.96]">
+                        <i class="fa-solid fa-phone text-lg sm:text-xl"></i>
+                        <span>התקשרו</span>
                     </a>
-                    <button id="modalMapNavigateBtn" onclick="navigateToMapFromModal()" class="flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold py-3 px-4 rounded-xl transition-colors shadow-sm">
-                        <i class="fa-solid fa-map-location-dot text-base text-white"></i>
-                        <span>צפה במפה הרחבה</span>
+                    <button id="modalMapNavigateBtn" onclick="navigateToMapFromModal()" class="flex flex-col items-center justify-center gap-1.5 bg-[#e2f8fd] text-[#009ebd] hover:bg-[#cbf1f9] text-[10px] sm:text-xs font-black py-3 px-1 rounded-2xl transition-all active:scale-[0.96]">
+                        <i class="fa-solid fa-map-location-dot text-lg sm:text-xl"></i>
+                        <span>במפה</span>
                     </button>
-                    <button id="modalShareBtn" onclick="shareRestaurant()" class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-3 px-4 rounded-xl transition-colors border border-slate-200">
-                        <i class="fa-solid fa-share-nodes text-base"></i>
-                        <span>שתפו מקום</span>
+                    <button id="modalShareBtn" onclick="shareRestaurant()" class="flex flex-col items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] sm:text-xs font-black py-3 px-1 rounded-2xl transition-all active:scale-[0.96]">
+                        <i class="fa-solid fa-share-nodes text-lg sm:text-xl"></i>
+                        <span>שיתוף</span>
                     </button>
                 </nav>
 
-                <section class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-xs text-slate-600">
-                    <div class="space-y-1">
-                        <h3 class="font-bold text-slate-900"><i class="fa-solid fa-map-pin ml-1.5 text-rose-500"></i>כתובת:</h3>
-                        <p id="modalAddress" class="font-medium text-slate-500"></p>
-                    </div>
-                    <div class="space-y-1">
-                        <h3 class="font-bold text-slate-900"><i class="fa-solid fa-clock ml-1.5 text-emerald-600"></i>שעות פעילות:</h3>
-                        <p id="modalHours" class="font-medium text-slate-500 leading-normal"></p>
-                    </div>
+                <section class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-right">
+                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5 mb-2">
+                        <i class="fa-solid fa-clock text-brand-500"></i>
+                        <span>שעות פעילות</span>
+                    </h3>
+                    <p id="modalHours" class="font-medium text-slate-600 text-xs leading-relaxed whitespace-pre-line"></p>
                 </section>
 
                 <section class="space-y-4">
@@ -806,6 +821,7 @@
 
         function handleLogoClick() {
             document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
             
             activeCategory = 'all';
             activeCity = 'all';
@@ -1222,6 +1238,7 @@
 
         function applyBookingSearch() {
             document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
             renderPlaces();
             showToast("🔍 החיפוש הוחל בהצלחה!", "success");
             scrollToGrid();
@@ -1260,6 +1277,7 @@
 
         function resetFilters() {
             document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
             handleLogoClick();
             showToast("🧹 כל המסננים אופסו", "success");
         }
@@ -1291,7 +1309,7 @@
             });
             
             const spacer = document.createElement('div');
-            spacer.className = "shrink-0 w-12 h-1 bg-transparent pointer-events-none";
+            spacer.className = "hidden md:block shrink-0 w-12 h-1 bg-transparent pointer-events-none";
             carousel.appendChild(spacer);
         }
 
@@ -1629,7 +1647,8 @@
         function parseReviewText(rawReviews) {
             if (!rawReviews || typeof rawReviews !== 'string') return [];
             
-            let parts = rawReviews.split(/ --- |\|/);
+            // תוקן: פיצול חכם שתומך ב- --- עם ירידות שורה או רק רווחים
+            let parts = rawReviews.split(/\s*\|\s*|\s*---\s*/);
             let parsedList = [];
             
             // הגדרת תבניות חזקות לזיהוי ציון בכל פורמט אפשרי (עם סוגריים, ללא, מתוך 5, מתוך 10, כוכבים וכו')
@@ -1741,7 +1760,8 @@
             document.getElementById('modalCategoryBadge').innerText = place.category;
             document.getElementById('modalKosherBadge').innerText = place.kosher;
             document.getElementById('modalStyleBadge').innerText = place.milk_meat;
-            document.getElementById('modalAddress').innerText = place.address;
+            
+            // תוקנה הכפילות של הכתובת. השארנו רק את העליונה, ולכן נעדכן רק אותה.
             if (document.getElementById('modalAddressDisplay')) {
                 document.getElementById('modalAddressDisplay').innerText = place.address;
             }
@@ -1769,7 +1789,7 @@
                     ? `${Math.round(place.calculatedDistance * 1000)} מ׳` 
                     : `${place.calculatedDistance.toFixed(1)} ק״מ`;
             } else {
-                document.getElementById('gridDistance').innerText = "לא פעיל";
+                document.getElementById('gridDistance').innerText = "לא ידוע";
             }
 
             const status = getOpenStatus(place.hours);
@@ -1821,20 +1841,61 @@
                         map: detailModalMapInstance
                     });
                     detailModalMapInstance.infowindow = new google.maps.InfoWindow();
+
+                    // הוספת כפתור "המיקום שלי" צף על גבי המפה
+                    if (!detailModalMapInstance.myLocBtnAdded) {
+                        const locBtnWrapper = document.createElement('div');
+                        locBtnWrapper.style.margin = '10px';
+                        
+                        const locBtn = document.createElement('button');
+                        locBtn.className = 'bg-white w-10 h-10 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.15)] flex items-center justify-center text-slate-700 hover:text-[#00c2e8] transition-colors border border-slate-100 outline-none';
+                        locBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs text-lg"></i>';
+                        locBtn.title = 'המיקום שלי';
+                        
+                        locBtn.onclick = () => {
+                            if (userCoords) {
+                                detailModalMapInstance.setCenter(userCoords);
+                                detailModalMapInstance.setZoom(16);
+                            } else {
+                                requestUserLocation(false);
+                                setTimeout(() => {
+                                    if (userCoords) {
+                                        detailModalMapInstance.setCenter(userCoords);
+                                        detailModalMapInstance.setZoom(16);
+                                    }
+                                }, 1500);
+                            }
+                        };
+                        
+                        locBtnWrapper.appendChild(locBtn);
+                        detailModalMapInstance.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locBtnWrapper);
+                        detailModalMapInstance.myLocBtnAdded = true;
+                    }
                 }
                 
                 setTimeout(() => {
                     google.maps.event.trigger(detailModalMapInstance, 'resize');
                     detailModalMapInstance.setCenter(place.coords);
-                    detailModalMarker.setPosition(place.coords);
-                    detailModalMarker.setTitle(place.name);
+                    
+                    // עיצוב תווית השם שמרחפת מעל לסיכה
+                    detailModalMarker.setOptions({
+                        position: place.coords,
+                        title: place.name,
+                        label: {
+                            text: place.name,
+                            color: '#1e293b',
+                            fontSize: '12px',
+                            fontWeight: '800',
+                            className: 'map-custom-label'
+                        }
+                    });
                     
                     const markerHtml = `
                         <div class="p-2 text-right" style="direction: rtl; font-family: 'Rubik', sans-serif;">
                             <h4 class="font-bold text-slate-900 text-sm mb-1">${place.name}</h4>
                             <p class="text-xs text-slate-600 mb-2">${place.address}</p>
                             <div style="display: flex; gap: 4px; margin-top: 6px;">
-                                <a href="https://waze.com/ul?q=${encodeURIComponent(place.address)}" target="_blank" style="background-color: #0099FF; color: white; font-weight: bold; font-size: 9px; padding: 4px 10px; border-radius: 4px; text-decoration: none; display: inline-block;">Waze</a>
+                                <a href="https://waze.com/ul?q=${encodeURIComponent(place.address)}" target="_blank" style="background-color: #00c2e8; color: white; font-weight: bold; font-size: 10px; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-block;">ניווט ב-Waze</a>
                             </div>
                         </div>
                     `;
@@ -1842,6 +1903,8 @@
                     detailModalMapInstance.infowindow.setContent(markerHtml);
                     
                     google.maps.event.clearListeners(detailModalMarker, 'click');
+                    
+                    // חלונית המידע נפתחת *אך ורק* בלחיצה כעת
                     detailModalMarker.addListener('click', () => {
                         detailModalMapInstance.infowindow.open(detailModalMapInstance, detailModalMarker);
                     });
@@ -1920,7 +1983,7 @@
                     const firstChar = review.author ? review.author.charAt(0) : "מ";
                     const revDiv = document.createElement('div');
                     
-                    let scoreOutOf10 = review.score10;
+                    const reviewFormattedScore = review.score10 ? review.score10 : "10.0";
 
                     const maxLength = 240;
                     const isLong = review.text.length > maxLength;
@@ -1928,29 +1991,29 @@
 
                     revDiv.className = "bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-lg transition-all flex flex-col gap-4 text-right";
                     revDiv.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center gap-3">
+                        <div class="flex justify-between items-start w-full">
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
                                 <div class="w-10 h-10 rounded-full ${randomColor} border font-black flex items-center justify-center text-sm shrink-0">
                                     ${firstChar}
                                 </div>
-                                <div>
-                                    <span class="font-bold text-slate-900 text-sm block">${review.author}</span>
+                                <div class="min-w-0">
+                                    <span class="font-bold text-slate-900 text-sm block truncate">${review.author}</span>
                                     <div class="flex items-center gap-1.5 mt-0.5">
-                                        <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded uppercase tracking-wider">
+                                        <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">
                                             <i class="fa-solid fa-check"></i> סועד מאומת
                                         </span>
-                                        <span class="text-[10px] text-slate-400">· לפני מספר ימים</span>
+                                        <span class="text-[10px] text-slate-400 shrink-0">· לפני מספר ימים</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-9 h-9 rounded-xl bg-brand-500 text-white flex items-center justify-center font-black text-sm shadow-sm shrink-0">
-                                ${scoreOutOf10}
+                            <div class="w-9 h-9 rounded-xl bg-brand-500 text-white flex items-center justify-center font-black text-sm shadow-sm shrink-0 mr-3">
+                                ${reviewFormattedScore}
                             </div>
                         </div>
                         <div class="text-slate-700 font-medium text-sm leading-relaxed">
                             <p id="review-text-${i}" class="whitespace-pre-line">${displayShortText}</p>
                             ${isLong ? `
-                            <button onclick="toggleLongReview(${i}, '${encodeURIComponent(review.text)}', this)" class="text-brand-500 hover:text-brand-600 text-xs font-black mt-2 inline-flex items-center gap-1 transition-colors outline-none focus:ring-0">
+                            <button onclick="toggleLongReview(${i}, this)" data-fulltext="${encodeURIComponent(review.text).replace(/'/g, "%27")}" class="text-brand-500 hover:text-brand-600 text-xs font-black mt-2 inline-flex items-center gap-1 transition-colors outline-none focus:ring-0">
                                 <span>קרא עוד</span>
                                 <i class="fa-solid fa-chevron-down text-[9px] transition-transform"></i>
                             </button>
@@ -1977,15 +2040,16 @@
             container.scrollTo({ top: 0, behavior: 'smooth' }); 
             
             document.body.classList.add('overflow-hidden');
+            document.documentElement.classList.add('overflow-hidden');
             
             setTimeout(() => {
                 container.classList.remove('pointer-events-none', 'opacity-0');
             }, 10);
         }
 
-        window.toggleLongReview = function(index, fullTextEncoded, btn) {
+        window.toggleLongReview = function(index, btn) {
             const p = document.getElementById(`review-text-${index}`);
-            const fullText = decodeURIComponent(fullTextEncoded);
+            const fullText = decodeURIComponent(btn.getAttribute('data-fulltext'));
             const isCollapsed = btn.getAttribute('data-collapsed') !== 'false';
             
             if (isCollapsed) {
@@ -2094,6 +2158,7 @@
             if (container) {
                 container.classList.add('pointer-events-none', 'opacity-0');
                 document.body.classList.remove('overflow-hidden');
+                document.documentElement.classList.remove('overflow-hidden');
                 
                 const dynamicSchema = document.getElementById('dynamic-restaurant-schema');
                 if (dynamicSchema) {
@@ -2143,7 +2208,7 @@
 
         function shareRestaurant() {
             const name = document.getElementById('modalName').innerText;
-            const address = document.getElementById('modalAddress').innerText;
+            const address = document.getElementById('modalAddressDisplay').innerText;
             
             const place = placesDatabase.find(p => p.id === currentModalPlaceId);
             const slugOrId = place && place.slug ? place.slug : currentModalPlaceId;
@@ -2232,9 +2297,11 @@
                 renderFavoritesList();
                 panel.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
+                document.documentElement.classList.add('overflow-hidden');
             } else {
                 panel.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
+                document.documentElement.classList.remove('overflow-hidden');
             }
         }
 
@@ -2493,6 +2560,7 @@
             if (tab === 'search') {
                 mobileMapPage.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
+                document.documentElement.classList.remove('overflow-hidden');
                 tabSearchBtn.classList.remove('text-slate-400');
                 tabSearchBtn.classList.add('text-brand-500');
                 tabMapBtn.classList.add('text-slate-400');
@@ -2500,6 +2568,7 @@
             } else if (tab === 'map') {
                 mobileMapPage.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
+                document.documentElement.classList.add('overflow-hidden');
                 tabMapBtn.classList.remove('text-slate-400');
                 tabMapBtn.classList.add('text-brand-500');
                 tabSearchBtn.classList.add('text-slate-400');
@@ -2629,6 +2698,7 @@
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 document.body.classList.add('overflow-hidden');
+                document.documentElement.classList.add('overflow-hidden');
             }
         }
 
@@ -2637,6 +2707,7 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
         }
     </script>
 </body>
