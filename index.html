@@ -419,7 +419,7 @@
             <p class="text-xs text-slate-400 font-medium">© <script>document.write(new Date().getFullYear())</script> KosherGo. כל הזכויות שמורות.</p>
             <p class="text-[10px] text-slate-400 mt-2 max-w-xl mx-auto">
                 <i class="fa-solid fa-circle-info text-amber-500 ml-1"></i>
-                המידע המוצג באתר מבוסס על נתוני בתי העסק ואינו מהווה פסיקה הלכתית. האחריות הבלעדית לווידאו תעודת הכשרות ותוקפה חלה על המשתמש מול בית העסק.
+                המחשב המוצג באתר מבוסס על נתוני בתי העסק ואינו מהווה פסיקה הלכתית. האחריות הבלעדית לווידאו תעודת הכשרות ותוקפה חלה על המשתמש מול בית העסק.
             </p>
         </div>
     </footer>
@@ -526,8 +526,8 @@
 
             <div class="flex-1 bg-white rounded-t-3xl -mt-6 relative z-20 px-4 sm:px-6 pt-6 pb-6 flex flex-col gap-6 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
                 
-                <div class="flex justify-between items-start gap-4 w-full">
-                    <div class="flex-1 pr-1">
+                <div class="flex flex-wrap justify-between items-start gap-3">
+                    <div class="flex-1 min-w-[200px]">
                         <div class="flex flex-wrap gap-1.5 mb-2">
                             <span id="modalCategoryBadge" class="text-[10px] font-black uppercase bg-brand-500 text-white px-2.5 py-1 rounded-md"></span>
                             <span id="modalKosherBadge" class="text-[10px] font-black uppercase bg-amber-500 text-slate-950 px-2.5 py-1 rounded-md"></span>
@@ -536,12 +536,12 @@
                         <h2 id="modalName" class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight"></h2>
                     </div>
                     
-                    <div class="flex items-center gap-2.5 shrink-0 pt-2">
-                        <div class="flex flex-col items-end justify-center text-left">
-                            <div id="modalRatingLabel" class="text-base font-black text-slate-900 leading-none mb-1.5"></div>
-                            <div id="modalRatingCount" class="text-[10px] sm:text-xs text-slate-500 leading-none"></div>
+                    <div class="flex items-center gap-2 bg-brand-50/60 p-2 rounded-2xl border border-brand-100 shrink-0">
+                        <div class="text-left flex flex-col justify-center">
+                            <div id="modalRatingLabel" class="text-sm font-black text-slate-900"></div>
+                            <div id="modalRatingCount" class="text-[10px] sm:text-xs font-semibold text-brand-700 mt-0.5 whitespace-nowrap"></div>
                         </div>
-                        <div class="bg-[#003b95] text-white rounded-t-xl rounded-br-xl rounded-bl-sm flex items-center justify-center font-black text-xl w-10 h-10 sm:w-12 sm:h-12 shadow-sm shrink-0">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-brand-500 text-white rounded-xl flex items-center justify-center font-black text-lg sm:text-xl shadow-md shrink-0">
                             <span id="modalRatingScore"></span>
                         </div>
                     </div>
@@ -1875,30 +1875,29 @@
 
                     <div class="p-4 flex-1 flex flex-col justify-between text-right space-y-3">
                         <div>
-                            <div class="flex justify-between items-start gap-3 w-full">
-                                <div class="flex-1">
-                                    <h3 class="font-extrabold text-slate-900 text-base leading-snug line-clamp-2">
-                                        <a href="/place/${place.slug}" onclick="openPlaceDetails('${place.id}'); event.preventDefault();" class="hover:text-brand-500 transition-colors">
-                                            ${place.name}
-                                        </a>
-                                    </h3>
-                                    <p class="text-[10px] text-slate-500 font-medium mt-1 flex items-center gap-1">
-                                        <i class="fa-solid fa-map-pin text-rose-500"></i>
-                                        <span class="truncate">${place.address}</span>
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-2 shrink-0 pt-0.5">
-                                    <div class="flex flex-col items-end justify-center text-left">
-                                        <p class="text-xs font-black text-slate-900 leading-none mb-1">${ratingLabel}</p>
-                                        <p class="text-[9px] text-slate-500 leading-none">ציון גוגל משוקלל • ${place.user_ratings_total} חוות דעת</p>
+                            <div class="flex flex-wrap items-start justify-between gap-x-2 gap-y-1.5">
+                                <h3 class="font-extrabold text-slate-900 text-base leading-snug line-clamp-2 flex-1 min-w-[120px] pl-2">
+                                    <a href="/place/${place.slug}" onclick="openPlaceDetails('${place.id}'); event.preventDefault();" class="hover:text-brand-500 transition-colors">
+                                        ${place.name}
+                                    </a>
+                                </h3>
+                                <div class="flex items-center gap-1.5 text-left shrink-0">
+                                    <div class="text-right">
+                                        <p class="text-[10px] font-bold text-slate-900 leading-none">${ratingLabel}</p>
+                                        <p class="text-[9px] text-slate-400 leading-none mt-0.5" title="ציון גוגל משוקלל">גוגל משוקלל • ${place.user_ratings_total} ביקורות</p>
                                     </div>
-                                    <div class="bg-[#003b95] text-white font-black text-sm w-8 h-8 flex items-center justify-center rounded-t-[6px] rounded-br-[6px] rounded-bl-[2px] shadow-sm shrink-0">
+                                    <div class="bg-brand-50 text-brand-700 font-extrabold text-xs px-1.5 py-1 rounded-lg">
                                         ${bookingStyleRating}
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="bg-slate-50 border border-slate-100/60 p-2.5 rounded-xl text-right mt-3 text-[11px] text-slate-600 relative">
+                            <p class="text-xs text-slate-400 font-bold mt-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-map-pin text-rose-500 text-[10px]"></i>
+                                <span>${place.address}</span>
+                            </p>
+                            
+                            <div class="bg-slate-50 border border-slate-100/60 p-2.5 rounded-xl text-right mt-2 text-[11px] text-slate-600 relative">
                                 <span class="block text-[8px] uppercase tracking-wider font-extrabold text-slate-400 mb-1">ביקורת גוגל נבחרת ⭐</span>
                                 <p class="line-clamp-2 leading-relaxed font-semibold italic">"${featuredText}"</p>
                             </div>
@@ -2055,7 +2054,7 @@
             
             if (modalRatingScore) modalRatingScore.innerText = scoreOutOf10;
             if (modalRatingLabel) modalRatingLabel.innerText = ratingLabel;
-            if (modalRatingCount) modalRatingCount.innerHTML = `ציון גוגל משוקלל • ${place.user_ratings_total} חוות דעת`;
+            if (modalRatingCount) modalRatingCount.innerText = `גוגל משוקלל • ${place.user_ratings_total} ביקורות`;
 
             document.getElementById('gridKosherType').innerText = place.kosher;
             document.getElementById('gridCategory').innerText = place.category;
@@ -2520,8 +2519,10 @@
             
             if (isNowFav) {
                 favorites.push(id);
+                showToast("❤️ התווסף למועדפים שלך!", "success");
             } else {
                 favorites.splice(idx, 1);
+                showToast("💔 הוסר מהמועדפים שלך", "warning");
             }
             
             localStorage.setItem('kosher_favorites', JSON.stringify(favorites));
